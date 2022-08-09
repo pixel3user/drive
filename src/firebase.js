@@ -23,6 +23,9 @@ const firestore = getFirestore(app)
 export const database = {
     folders: collection(firestore,"folders"),
     files: collection(firestore,"files"),
+    formatDoc: doc => {
+        return { id: doc.id, ...doc.data()}
+    },
     getCurrentTimeStamp: serverTimestamp,
 }
 export const auth = getAuth(app)
