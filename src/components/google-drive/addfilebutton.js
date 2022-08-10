@@ -10,6 +10,7 @@ export default function AddFileButton({currentFolder}) {
     const { currentuser } = useAuth()
 
     function handleUpload(e){
+        e.preventDefault()
         const file = e.target.files[0]
         if(currentFolder == null || file == null) return
 
@@ -17,7 +18,6 @@ export default function AddFileButton({currentFolder}) {
         `${currentFolder.path.map( item => item.name).join('/')}/${file.name}`
         : file.name
 
-        console.log(filePath)
         const uploadRef = ref(storage, `/files/${currentuser.uid}/${filePath}`)
         uploadBytes(uploadRef, file).then( snapshot => {
             console.log('Uploaded successfully')
