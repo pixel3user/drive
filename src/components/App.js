@@ -19,6 +19,7 @@ function App() {
                 <Route exact path='/' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                 <Route exact path='/user' element={<PrivateRoute><Profile /></PrivateRoute>} />        
                 <Route path='/update-profile' element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />      
+                <Route exact path='/folder/:folderId' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 
                 {/* Auth routes */}
                 <Route path='/login' element={<Login />} />

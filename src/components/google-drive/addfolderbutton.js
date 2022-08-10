@@ -5,6 +5,7 @@ import Uploadfilespopup from './uploadfilespopup'
 import { database } from '../../firebase'
 import { addDoc } from 'firebase/firestore'
 import { useAuth } from '../../contexts/authContext'
+import { ROOT_FOLDER } from '../../hooks/useFolder'
 
 export default function Addfolderbutton({currentFolder}) {
 
@@ -24,13 +25,17 @@ export default function Addfolderbutton({currentFolder}) {
         e.preventDefault()
 
         if(currentFolder == null) return
+        const path = [...currentFolder.path]
+        if(currentFolder !== ROOT_FOLDER){
+            path.push({name: currentFolder.name , id: currentFolder.id})
+        }
 
         try{
             const docRef = await addDoc(database.folders, {
             name: name,
             parentId: currentFolder.id,
             userId: currentuser.uid,
-            // path,
+            path: path,
             createdAt: database.getCurrentTimeStamp()
         })
         console.log("Folder created with ID: ",docRef.id)
