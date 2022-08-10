@@ -1,6 +1,7 @@
 import {initializeApp} from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { collection, getFirestore, serverTimestamp } from 'firebase/firestore'
+import { getStorage } from "firebase/storage"
 
 const app = initializeApp({
     apiKey: "AIzaSyDQK9Ei8-eYzbyHs95etCU7ACAEFdo7dpg",
@@ -28,5 +29,7 @@ export const database = {
     },
     getCurrentTimeStamp: serverTimestamp,
 }
+
+export const storage = getStorage(app)
 export const auth = getAuth(app)
 export default app

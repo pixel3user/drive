@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useFolder } from '../../hooks/useFolder'
+import AddFileButton from './addfilebutton'
 import Addfolderbutton from './addfolderbutton'
 import Folder from './folder'
 import FolderPath from './folderpath'
@@ -18,6 +19,7 @@ export default function Dashboard() {
             <div className='flex flex-row justify-between'>
             <FolderPath currentFolder={folder} />
                 <Addfolderbutton currentFolder={folder}/>
+                <AddFileButton currentFolder={folder} />
                 {childFolders.length>0 && (
                   <div className='flex flex-row'>
                     {childFolders.map(childFolder => (
