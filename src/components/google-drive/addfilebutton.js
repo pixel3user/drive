@@ -42,10 +42,10 @@ export default function AddFileButton({currentFolder}) {
         //         console.log(url)
         //     })
         // })
-
         uploadBytes(uploadRef, file).then( snapshot => {
             console.log('Uploaded successfully')
         })
+        console.log("i m here")
 
         getDownloadURL(uploadRef).then(async (url) => {
             await addDoc(database.files,{

@@ -95,7 +95,7 @@ export function useFolder(folderId = null, folder = null){
         return onSnapshot(q,snapshot => {
             dispatch({
                 type: ACTIONS.SET_CHILD_FILES,
-                payload: {childFILES: snapshot.docs.map(database.formatDoc)}
+                payload: {childFiles: snapshot.docs.map(database.formatDoc)}
             })
         })
     },[folderId,currentuser])
