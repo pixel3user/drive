@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useFolder } from '../../hooks/useFolder'
 import AddFileButton from './addfilebutton'
 import Addfolderbutton from './addfolderbutton'
+import File from './file'
 import Folder from './folder'
 import FolderPath from './folderpath'
 import Navbar from './navbar'
@@ -10,7 +11,7 @@ import Navbar from './navbar'
 export default function Dashboard() {
   const { folderId } = useParams()
   const { state = {} } = useLocation()
-  const {folder, childFolders} = useFolder(folderId,state)
+  const {folder, childFolders, childFiles} = useFolder(folderId,state)
 
   return (
     <>
@@ -29,6 +30,14 @@ export default function Dashboard() {
                     ))}
                   </div>
                 )}
+                {childFolders.length > 0 && childFiles.length > 0 && <hr />}
+                <div className='flex flex-row'>
+                  {childFiles.map(childFile => (
+                        <div key={childFile.id} style={{maxWidth: "250px"}} className='p-2'>
+                          <File file={childFile} />
+                        </div>
+                      ))}
+                </div>
             </div>
         </div>
     </>

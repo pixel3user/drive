@@ -1,9 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
-import { storage } from '../../firebase'
-import { ref, uploadBytes } from 'firebase/storage'
+import { database, storage } from '../../firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useAuth } from '../../contexts/authContext'
+import { ROOT_FOLDER } from '../../hooks/useFolder'
+import { addDoc } from 'firebase/firestore'
 
 export default function AddFileButton({currentFolder}) {
 
@@ -15,12 +17,44 @@ export default function AddFileButton({currentFolder}) {
         if(currentFolder == null || file == null) return
 
         const filePath = currentFolder.path.length > 0 ?
-        `${currentFolder.path.map( item => item.name).join('/')}/${file.name}`
+        `${currentFolder.path.map( item => item.name).join('/')}/${currentFolder.name}/${file.name}`
         : file.name
-
+        
         const uploadRef = ref(storage, `/files/${currentuser.uid}/${filePath}`)
+        // const uploadTask = uploadBytes(uploadRef, file)
+        // uploadTask.on('state_changed', snapshot => {
+        //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        //         console.log('Upload is ' + progress + '% done');
+        //     switch (snapshot.state) {
+        //         case 'paused':
+        //             console.log('Upload is paused');
+        //             break;
+        //         case 'running':
+        //             console.log('Upload is running');
+        //             break;
+        //     }
+        // },
+        // (error) => {
+        //     console.log(error)
+        // },
+        // () => {
+        //     getDownloadURL(uploadRef).then((url) => {
+        //         console.log(url)
+        //     })
+        // })
+
         uploadBytes(uploadRef, file).then( snapshot => {
             console.log('Uploaded successfully')
+        })
+
+        getDownloadURL(uploadRef).then(async (url) => {
+            await addDoc(database.files,{
+                url: url,
+                name: file.name,
+                createdAt: database.getCurrentTimeStamp(),
+                folderId: currentFolder.id,
+                userId: currentuser.uid
+            })
         })
     }
 
