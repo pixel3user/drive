@@ -63,7 +63,6 @@ export default function AddFileButton({currentFolder}) {
             })
         })
     }
-
   return (
     <div>
         <label className='border-2 border-green-300 rounded-lg p-1 m-0 mr-2 hover:cursor-pointer'>
