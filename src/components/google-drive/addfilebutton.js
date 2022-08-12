@@ -4,8 +4,7 @@ import React from 'react'
 import { database, storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useAuth } from '../../contexts/authContext'
-import { ROOT_FOLDER } from '../../hooks/useFolder'
-import { addDoc } from 'firebase/firestore'
+import { addDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 
 export default function AddFileButton({currentFolder}) {
 
@@ -45,15 +44,22 @@ export default function AddFileButton({currentFolder}) {
         uploadBytes(uploadRef, file).then( snapshot => {
             console.log('Uploaded successfully')
         })
-        console.log("i m here")
 
         getDownloadURL(uploadRef).then(async (url) => {
-            await addDoc(database.files,{
-                url: url,
-                name: file.name,
-                createdAt: database.getCurrentTimeStamp(),
-                folderId: currentFolder.id,
-                userId: currentuser.uid
+            const q = query((database.files), where("name","==",file.name), where("userId","==",currentuser.uid), where("folderId","==",currentFolder.id))
+            await getDocs(q).then(existingFiles => {
+                const existingFile = existingFiles.docs[0]
+                if(existingFile){
+                    updateDoc(existingFile.ref,{url: url})
+                }else{
+                    addDoc(database.files,{
+                        url: url,
+                        name: file.name,
+                        createdAt: database.getCurrentTimeStamp(),
+                        folderId: currentFolder.id,
+                        userId: currentuser.uid
+                    })
+                }
             })
         })
     }
