@@ -9,7 +9,7 @@ In the project directory, you can run:
 
 then execute
 
-### `npm start`
+### `npm run start`
 
 ## How to setup Firebase
 Create a firebase project and on the root folder create a file named '.env.local' and add the following with your details(without quotes):
