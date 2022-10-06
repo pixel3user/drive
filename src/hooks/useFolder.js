@@ -81,23 +81,27 @@ export function useFolder(folderId = null, folder = null){
     },[folderId])
 
     useEffect(() => {
-            const q = query((database.folders), where("parentId","==",folderId), orderBy("createdAt"), where("userId","==",currentuser.uid))
-            return onSnapshot(q,snapshot => {
-                dispatch({
-                    type: ACTIONS.SET_CHILD_FOLDERS,
-                    payload: {childFolders: snapshot.docs.map(database.formatDoc)}
+            if(currentuser){
+                const q = query((database.folders), where("parentId","==",folderId), orderBy("createdAt"), where("userId","==",currentuser.uid))
+                return onSnapshot(q,snapshot => {
+                    dispatch({
+                        type: ACTIONS.SET_CHILD_FOLDERS,
+                        payload: {childFolders: snapshot.docs.map(database.formatDoc)}
+                    })
                 })
-            })
+            }
     },[folderId,currentuser])
 
     useEffect(() => {
-        const q = query((database.files), where("folderId","==",folderId), orderBy("createdAt"), where("userId","==",currentuser.uid))
-        return onSnapshot(q,snapshot => {
-            dispatch({
-                type: ACTIONS.SET_CHILD_FILES,
-                payload: {childFiles: snapshot.docs.map(database.formatDoc)}
+        if(currentuser){
+            const q = query((database.files), where("folderId","==",folderId), orderBy("createdAt"), where("userId","==",currentuser.uid))
+            return onSnapshot(q,snapshot => {
+                dispatch({
+                    type: ACTIONS.SET_CHILD_FILES,
+                    payload: {childFiles: snapshot.docs.map(database.formatDoc)}
+                })
             })
-        })
+        }
     },[folderId,currentuser])
 
     return state

@@ -1,0 +1,22 @@
+{
+  "emulators": {
+    "firestore": {
+      "port": 9903
+    },
+    "storage": {
+      "port": 9904
+    },
+    "ui": {
+      "enabled": true
+    },
+    "auth": {
+      "port": 9099
+    }
+  },
+  "firestore": {
+    "rules": "./rules/firestore.rules"
+  },
+  "storage": {
+    "rules": "./rules/storage.rules"
+  }
+}

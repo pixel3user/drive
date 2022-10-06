@@ -1,7 +1,8 @@
+import { config } from '@fortawesome/fontawesome-svg-core'
 import {initializeApp} from 'firebase/app'
-import { getAuth } from 'firebase/auth'
-import { collection, getFirestore, serverTimestamp } from 'firebase/firestore'
-import { getStorage } from "firebase/storage"
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
+import { collection, connectFirestoreEmulator, getFirestore, serverTimestamp } from 'firebase/firestore'
+import { connectStorageEmulator, getStorage } from "firebase/storage"
 
 const app = initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,6 +15,7 @@ const app = initializeApp({
 })
 
 const firestore = getFirestore(app)
+
 export const database = {
     folders: collection(firestore,"folders"),
     files: collection(firestore,"files"),
@@ -23,6 +25,14 @@ export const database = {
     getCurrentTimeStamp: serverTimestamp,
 }
 
+
+
+// connectFirestoreEmulator(firestore,'localhost',9903)
 export const storage = getStorage(app)
 export const auth = getAuth(app)
+
+// connectAuthEmulator(auth,"http://localhost:9099")
+
+// connectStorageEmulator(storage,"localhost",9904)
+
 export default app

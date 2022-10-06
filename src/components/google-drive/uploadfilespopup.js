@@ -5,16 +5,16 @@ export default function Uploadfilespopup({visible, close, setName ,handleSubmit}
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
-      <div className='flex flex-col bg-gray-100 rounded-lg shadow-lg'>
+      <div className='flex flex-col bg-white rounded-md'>
         <form onSubmit={handleSubmit}>
-          <div className='flex flex-row mt-6 mx-6'>
-            <label>Folder Name: </label>
-            <input required type="text" className='rounded border-2 px-2' onChange={e => setName(e.target.value)} />
-            </div>
+          <div className='flex flex-col mt-6 mx-6'>
+            <label className='mb-2'>Album Name: </label>
+            <input required type="text" className='text-black font-normal focus:shadow-lg bg-[#EEEEEE] outline-none rounded-md px-4 py-2' onChange={e => setName(e.target.value)} />
+          </div>
 
-            <div className='flex flex-row justify-end mx-3'>
-              <button onClick={close} className="m-2 rounded-lg px-2 bg-gray-300 hover:bg-gray-400" >close</button>
-              <button className="m-2 rounded-lg px-2 bg-green-300 hover:bg-green-400" >Add Folder</button>
+          <div className='flex flex-row justify-end mx-3 mt-3'>
+              <button onClick={close} className="m-2 text-sm text-red-400 hover:text-red-700" >close</button>
+              <button className="m-2 text-sm text-[#1a73e8] hover:text-[#1557ad]" >Add Album</button>
           </div>
         
         </form>

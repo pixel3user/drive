@@ -10,11 +10,9 @@ export default function Folder({folder}) {
         pathname: `/folder/${folder.id}`,
         state: { folder: folder }
       }
-    }>
-        <div className='w-full px-2 py-1 bg-gray-100 rounded-lg border-2 border-black hover:bg-gray-300'>
-            <FontAwesomeIcon icon={faFolder} className='mr-2' />
-            {folder.name}
-        </div>
+    } className="flex flex-col w-fit items-center">
+        <FontAwesomeIcon icon={faFolder} className='mr-2 h-24 w-24 text-gray-300' />
+        <span className='text-gray-500'>{folder.name}</span>
     </Link>
   )
 }

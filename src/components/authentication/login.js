@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/authContext'
+import NavBar from '../navbar'
 
 export default function Login() {
 
@@ -33,33 +34,39 @@ export default function Login() {
     }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className='flex flex-col'>
-        <form className='flex flex-col mx-auto border-2 px-5 rounded-xl' onSubmit={handleSubmit}>
-            <h2 className='mx-auto'>Sign up</h2>
-            {error}
-            <div className='flex flex-col'>
-                <label className='flex'>email</label>
-                <input className="border-2 w-fit" ref={emailRef} required type="email" />
-            </div>
+    <>
+      <div className='hidden sm:block'>
+        <NavBar />
+      </div>
+      <div className="flex flex-col items-center justify-center sm:h-screen">
+        <div className='flex flex-col'>
+          <form className='flex flex-col sm:w-[28rem] sm:h-[28rem] mx-auto sm:border-[1px] px-5 rounded-3xl' onSubmit={handleSubmit}>
+              <h2 className='mx-auto text-[#919191] font-bold mt-12'>iPhotos</h2>
+              {error}
+              <div className='flex flex-col mx-auto mt-12'>
+                  <label className='text-[#919191] text-sm font-bold'>email</label>
+                  <input className="w-[22rem] outline-none px-3 py-2 focus:shadow-lg bg-[#EEEEEE] rounded-md" ref={emailRef} required type="email" />
+              </div>
 
-            <div className='flex flex-col'>
-                <label className='flex'>password</label>
-                <input className="border-2" ref={passwordRef} required type="password" />
-            </div>
-            
+              <div className='flex flex-col mx-auto mt-8'>
+                  <label className='text-[#919191] text-sm font-bold'>password</label>
+                  <input className="w-[22rem] outline-none px-3 py-2 focus:shadow-lg bg-[#EEEEEE] rounded-md" ref={passwordRef} required type="password" />
+              </div>
+              
 
-            <button disabled={loading} className='m-3 p-1 w-fit mx-auto border rounded-xl bg-yellow-600 hover:bg-yellow-100 focus:bg-gray-300'>
-                Login
-            </button>
-        </form>
+              <div className='flex flex-row justify-between items-center mt-12 mx-7'>
+                <Link to='/forgot-password' className='text-[#1557ad] font-bold'>Forgot password?</Link>
+                <button disabled={loading} className='py-1 px-4 w-fit border rounded-md text-white font-bold bg-[#1a73e8] hover:bg-[#1557ad]'>
+                    Login
+                </button>
+              </div>
+
+              <div className='w-100 text-center mt-12'>
+                Do not have an account. <Link to="/signup" className='text-[#1557ad] font-bold'>Sign up</Link>
+              </div>
+          </form>
+        </div>
       </div>
-      <div className='w-100 text-center mt-2'>
-        <Link to='/forgot-password'>Forgot password</Link>
-      </div>
-      <div className='w-100 text-center mt-2'>
-        Do not have an account. <Link to="/signup">Sign up</Link>
-      </div>
-    </div>
+    </>
   )
 }
