@@ -41,7 +41,7 @@ export default function Dashboard() {
                       <span className='m-2 text-[#919191] text-sm font-bold'>Photos</span>
                       <div className='grid grid-cols-2 sm:grid-cols-5'>
                         {childFiles.map(childFile => (
-                          <div key={childFile.id} className='p-[1px]'>
+                          <div key={childFile.name} className='p-[1px]'>
                             <File file={childFile} />
                           </div>
                             ))}

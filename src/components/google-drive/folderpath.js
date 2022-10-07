@@ -5,7 +5,7 @@ import { ROOT_FOLDER } from '../../hooks/useFolder'
 export default function FolderPath({currentFolder}) {
     let path = currentFolder === ROOT_FOLDER ? [] : [ROOT_FOLDER]
     if(currentFolder) path = [...path, ...currentFolder.path]
-    console.log(path[path.length - 2])
+
     return (
     <div className='flex flex-row m-2 text-[#919191] text-sm font-bold'>
         {path[path.length - 2] != undefined && (
