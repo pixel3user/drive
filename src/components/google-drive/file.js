@@ -55,7 +55,7 @@ export default function File({file,currentFolder}) {
               </button>
             </div>
           </div>
-          <div className='flex justify-center items-center h-full'>
+          <div className='flex justify-center items-center overflow-auto h-full'>
             <div className='w-full sm:h-full'>
               <img className='w-full h-full object-contain' src={file.url} />
             </div>
