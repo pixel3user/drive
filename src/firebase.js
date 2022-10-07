@@ -1,7 +1,7 @@
 import { config } from '@fortawesome/fontawesome-svg-core'
 import {initializeApp} from 'firebase/app'
 import { connectAuthEmulator, getAuth } from 'firebase/auth'
-import { collection, connectFirestoreEmulator, getFirestore, serverTimestamp } from 'firebase/firestore'
+import { collection, connectFirestoreEmulator, getFirestore, serverTimestamp, doc } from 'firebase/firestore'
 import { connectStorageEmulator, getStorage } from "firebase/storage"
 
 const app = initializeApp({
@@ -19,6 +19,7 @@ const firestore = getFirestore(app)
 export const database = {
     folders: collection(firestore,"folders"),
     files: collection(firestore,"files"),
+    file: fileId => doc(firestore, "files", fileId),
     formatDoc: doc => {
         return { id: doc.id, ...doc.data()}
     },
