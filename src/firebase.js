@@ -2,7 +2,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import {initializeApp} from 'firebase/app'
 import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { collection, connectFirestoreEmulator, getFirestore, serverTimestamp, doc } from 'firebase/firestore'
-import { connectStorageEmulator, getStorage } from "firebase/storage"
+import { connectStorageEmulator, getStorage, ref } from "firebase/storage"
 
 const app = initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

@@ -106,7 +106,7 @@ export default function FileUploadModal({filesUploadModal,setfilesUploadModal,cu
         e.preventDefault()
         setselectedFiles([])
         setfilesUploadModal(false)
-        setuploadPercentage()
+        setuploadPercentage(0)
     }
 
   if(filesUploadModal){

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import FileSaver from "file-saver"
 import { deleteDoc, doc } from 'firebase/firestore'
-import { database } from '../../firebase'
+import { database, storage } from '../../firebase'
+import { deleteObject, ref } from 'firebase/storage'
+import { useAuth } from '../../contexts/authContext'
 
-export default function File({file}) {
+export default function File({file,currentFolder}) {
   const [showPhoto,setshowPhoto] = useState(false)
+  const {currentuser} = useAuth()
 
   const downloadImage = (imageUrl,imageName) => {
     FileSaver.saveAs(imageUrl,imageName)
@@ -12,10 +15,19 @@ export default function File({file}) {
 
   async function deleteImage(e){
     e.preventDefault()
-    await deleteDoc(database.file(file.id)).then(() => {
-      // setshowPhoto(false)
-    })
-
+    try{
+      await deleteDoc(database.file(file.id)).then(() => {
+        const filePath = currentFolder.path.length > 0 ?
+            `${currentFolder.path.map( item => item.name).join('/')}/${currentFolder.name}/${file.name}`
+            : file.name
+        const deleteRef = ref(storage, `/files/${currentuser.uid}/${filePath}`)
+        deleteObject(deleteRef).then(() => {
+          setshowPhoto(false)
+        })
+      })
+    }catch(e){
+      console.log(e)
+    }
   }
 
   return (
@@ -44,8 +56,8 @@ export default function File({file}) {
             </div>
           </div>
           <div className='flex justify-center items-center h-full'>
-            <div className='bg-white w-full'>
-              <img src={file.url} />
+            <div className='w-full sm:h-full'>
+              <img className='w-full h-full object-contain' src={file.url} />
             </div>
           </div>
 

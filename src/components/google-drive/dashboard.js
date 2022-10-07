@@ -43,7 +43,7 @@ export default function Dashboard() {
                       <div className='grid grid-cols-2 sm:grid-cols-5'>
                         {childFiles.map(childFile => (
                           <div key={childFile.name} className='p-[1px]'>
-                            <File file={childFile} />
+                            <File file={childFile} currentFolder={folder} />
                           </div>
                             ))}
                       </div>
