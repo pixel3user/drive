@@ -1,4 +1,4 @@
-import { AuthProvider } from '../contexts/authContext';
+import { AuthProvider, useAuth } from '../contexts/authContext';
 import './App.css';
 import Signup from './authentication/signup';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -8,7 +8,7 @@ import PrivateRoute from './authentication/privateRoute';
 import ForgotPassword from './authentication/forgotPassword';
 import UpdateProfile from './authentication/updateProfile';
 import Dashboard from './google-drive/dashboard';
-
+import { Navigate } from 'react-router-dom'
 
 function App() {
   return (

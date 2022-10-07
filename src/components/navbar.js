@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Uploadfilespopup from './google-drive/uploadfilespopup'
 import { ROOT_FOLDER } from '../hooks/useFolder'
 import { Popover, Transition } from '@headlessui/react'
+import FileUploadModal from './google-drive/fileUploadModal'
 
 
 
@@ -19,62 +20,68 @@ export default function NavBar({currentFolder,folderId}) {
     const [open, setopen] = useState(false)
     const [name, setName] = useState('')
 
+    const [filesUploadModal,setfilesUploadModal] = useState(false)
 
 
-    function handleUpload(e){
-        e.preventDefault()
-        const file = e.target.files[0]
-        if(currentFolder== null || file == null) return
 
-        const filePath = currentFolder.path.length > 0 ?
-        `${currentFolder.path.map( item => item.name).join('/')}/${currentFolder.name}/${file.name}`
-        : file.name
-        
-        const uploadRef = ref(storage, `/files/${currentuser.uid}/${filePath}`)
-        // const uploadTask = uploadBytes(uploadRef, file)
-        // uploadTask.on('state_changed', snapshot => {
-        //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //         console.log('Upload is ' + progress + '% done');
-        //     switch (snapshot.state) {
-        //         case 'paused':
-        //             console.log('Upload is paused');
-        //             break;
-        //         case 'running':
-        //             console.log('Upload is running');
-        //             break;
-        //     }
-        // },
-        // (error) => {
-        //     console.log(error)
-        // },
-        // () => {
-        //     getDownloadURL(uploadRef).then((url) => {
-        //         console.log(url)
-        //     })
-        // })
-        uploadBytes(uploadRef, file).then( snapshot => {
-            console.log('Uploaded successfully')
+    function handleUpload(files){
+        // e.preventDefault()
+        // const file = e.target.files[0]
 
-            getDownloadURL(uploadRef).then(async (url) => {
-                const q = query((database.files), where("name","==",file.name), where("userId","==",currentuser.uid), where("folderId","==",currentFolder.id))
-                await getDocs(q).then(existingFiles => {
-                    const existingFile = existingFiles.docs[0]
-                    if(existingFile){
-                        updateDoc(existingFile.ref,{url: url})
-                    }else{
-                        addDoc(database.files,{
-                            url: url,
-                            name: file.name,
-                            createdAt: database.getCurrentTimeStamp(),
-                            folderId: currentFolder.id,
-                            userId: currentuser.uid
-                        })
-                    }
+        function uploadFile(file){
+
+            if(currentFolder== null || file == null) return
+
+            const filePath = currentFolder.path.length > 0 ?
+            `${currentFolder.path.map( item => item.name).join('/')}/${currentFolder.name}/${file.name}`
+            : file.name
+            
+            const uploadRef = ref(storage, `/files/${currentuser.uid}/${filePath}`)
+            // const uploadTask = uploadBytes(uploadRef, file)
+            // uploadTask.on('state_changed', snapshot => {
+            //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            //         console.log('Upload is ' + progress + '% done');
+            //     switch (snapshot.state) {
+            //         case 'paused':
+            //             console.log('Upload is paused');
+            //             break;
+            //         case 'running':
+            //             console.log('Upload is running');
+            //             break;
+            //     }
+            // },
+            // (error) => {
+            //     console.log(error)
+            // },
+            // () => {
+            //     getDownloadURL(uploadRef).then((url) => {
+            //         console.log(url)
+            //     })
+            // })
+            uploadBytes(uploadRef, file).then( snapshot => {
+                console.log('Uploaded successfully')
+
+                getDownloadURL(uploadRef).then(async (url) => {
+                    const q = query((database.files), where("name","==",file.name), where("userId","==",currentuser.uid), where("folderId","==",currentFolder.id))
+                    await getDocs(q).then(existingFiles => {
+                        const existingFile = existingFiles.docs[0]
+                        if(existingFile){
+                            updateDoc(existingFile.ref,{url: url})
+                        }else{
+                            addDoc(database.files,{
+                                url: url,
+                                name: file.name,
+                                createdAt: database.getCurrentTimeStamp(),
+                                folderId: currentFolder.id,
+                                userId: currentuser.uid
+                            })
+                        }
+                    })
                 })
             })
-            
-        })
+        }
 
+        files.forEach(file => uploadFile(file.value))
         
     }
 
@@ -115,7 +122,7 @@ export default function NavBar({currentFolder,folderId}) {
   return (
     <div className='fixed top-0 w-full bg-white'>
         <div className='flex flex-row py-3 px-10 justify-between'>
-            <span className='flex justify-center items-center text-[#919191] font-bold mr-4 h-9'>iPhotos</span>
+            <Link to={'/'} className='flex justify-center items-center text-[#919191] font-bold mr-4 h-9'>iPhotos</Link>
             {currentuser && (
                 <>
                     <input className="hidden w-0 sm:block sm:w-1/2 outline-none px-3 focus:shadow-lg bg-[#EEEEEE] rounded-md" placeholder='search' />
@@ -137,11 +144,14 @@ export default function NavBar({currentFolder,folderId}) {
                                 <Uploadfilespopup visible={open} close={closeModal} 
                                     setName={setName} handleSubmit={handleSubmit} />
 
-                                <label className='flex flex-row justify-center items-center cursor-pointer'>
+                                <label onClick={() => setfilesUploadModal(true)} className='flex flex-row justify-center items-center cursor-pointer'>
                                     <img className="w-7 h-7" src='/images/upload.svg' />
                                     <span className='hidden sm:block'>upload</span>
-                                    <input type="file" onChange={handleUpload} style={{ opacity: 0, position: 'absolute', left: '-9999px'}} />
+                                    {/* <input type="file" onChange={handleUpload} style={{ opacity: 0, position: 'absolute', left: '-9999px'}} /> */}
                                 </label>
+
+                                <FileUploadModal handleUpload={handleUpload} filesUploadModal={filesUploadModal} setfilesUploadModal={setfilesUploadModal} />
+
                             </div>
                             <Popover className="relative">
                                 {({ open }) => (

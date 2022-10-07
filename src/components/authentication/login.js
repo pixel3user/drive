@@ -26,8 +26,12 @@ export default function Login() {
           setloading(true)
           await login(emailRef.current.value,passwordRef.current.value)
           navigate("/")
-        }catch{
-          seterror("Failed to log you in")
+        }catch(e){
+          if(e.code == 'auth/wrong-password'){
+            seterror("Wrong password")
+          }else{
+            seterror("Failed to log you in")
+          }
         }
 
         setloading(false)
@@ -42,7 +46,7 @@ export default function Login() {
         <div className='flex flex-col'>
           <form className='flex flex-col sm:w-[28rem] sm:h-[28rem] mx-auto sm:border-[1px] px-5 rounded-3xl' onSubmit={handleSubmit}>
               <h2 className='mx-auto text-[#919191] font-bold mt-12'>iPhotos</h2>
-              {error}
+              <span className='mx-auto text-red-400 font-bold mt-4'>{error}</span>
               <div className='flex flex-col mx-auto mt-12'>
                   <label className='text-[#919191] text-sm font-bold'>email</label>
                   <input className="w-[22rem] outline-none px-3 py-2 focus:shadow-lg bg-[#EEEEEE] rounded-md" ref={emailRef} required type="email" />
@@ -60,11 +64,10 @@ export default function Login() {
                     Login
                 </button>
               </div>
-
-              <div className='w-100 text-center mt-12'>
+          </form>
+          <div className='w-100 text-center mt-4'>
                 Do not have an account. <Link to="/signup" className='text-[#1557ad] font-bold'>Sign up</Link>
               </div>
-          </form>
         </div>
       </div>
     </>
