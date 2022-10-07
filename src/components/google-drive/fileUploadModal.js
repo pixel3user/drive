@@ -114,12 +114,26 @@ export default function FileUploadModal({filesUploadModal,setfilesUploadModal,cu
         <div className='fixed inset-0 bg-white sm:bg-black sm:bg-opacity-30 backdrop-blur-sm flex flex-col justify-center items-center'>
           <div className='flex flex-col w-full h-full sm:w-1/2 sm:h-2/3 sm:bg-white rounded-xl'>
             <div className='flex flex-col justify-center items-center w-full h-full overflow-auto'>
-                <label onClick={() => setfilesUploadModal(true)} className='flex flex-row mx-auto cursor-pointer mt-8'>
-                    <img className="w-32 h-32" src='/images/addphotos.svg' />
-                    {/* <span className='hidden sm:block'>upload</span> */}
-                    <input type="file" multiple="multiple" accept="image/png, image/jpeg" onChange={handleFiles} style={{ opacity: 0, position: 'absolute', left: '-9999px'}} />
-                </label>
-                {uploadPercentage !=0 && <span className='border-2 h-fit w-fit rounded-full p-1'>{uploadPercentage}</span>}
+
+                {uploadPercentage != 0 ? (
+                    <>
+                        <span className='text-xl font-bold'>Upload Percentage</span>
+                        <div className="w-1/2 bg-gray-200 rounded-full my-6 dark:bg-gray-700">
+                            <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${uploadPercentage}%`}}> {uploadPercentage}%</div>
+                        </div>
+                    </>
+                    )   :   (
+                        <label onClick={() => setfilesUploadModal(true)} className='flex flex-row mx-auto cursor-pointer mt-8'>
+                            <img className="w-32 h-32" src='/images/addphotos.svg' />
+                            {/* <span className='hidden sm:block'>upload</span> */}
+                            <input type="file" multiple="multiple" accept="image/png, image/jpeg" onChange={handleFiles} style={{ opacity: 0, position: 'absolute', left: '-9999px'}} />
+                        </label>
+                    )
+                }
+
+                {/* {uploadPercentage !=0 && <span className={`border-2 h-fit w-fit rounded-full p-1`}>{uploadPercentage}</span>} */}
+                                
+
 
                 <div className='grid grid-cols-4 mx-4'>{selectedFiles && selectedFiles.map(file => (
                 <div key={file.value.name} className='mx-1 relative'>

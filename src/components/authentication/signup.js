@@ -63,7 +63,7 @@ export default function Signup() {
                   <input className="w-[22rem] outline-none px-3 py-2 focus:shadow-lg bg-[#EEEEEE] rounded-md" ref={passwordConfirmRef} required type="password" />
               </div>
 
-              <div className='flex flex-row justify-between items-center mt-12'>
+              <div className='flex flex-row justify-between items-center mt-8'>
                 <div className='w-100 mt-5 text-center mr-4'>
                   Already have an account. <Link to="/login" className='text-[#1557ad] font-bold'>Log in</Link>
                 </div>
